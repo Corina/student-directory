@@ -10,26 +10,26 @@ def input_students
   # create an empty array
   students  = []
   # get the first name
-  name  = gets.chomp
+  name  = gets.chop
   while !name.empty? do
     # add the student hash to the array
     puts "Please enter the cohort"
-    cohort_input = gets.chomp
+    cohort_input = gets.chop
     while !(cohort_input.is_a? String) || cohort_input == "" || !MONTHS.include?(cohort_input)
       puts "Please enter a correct name of the month for cohort"
-      cohort_input = gets.chomp
+      cohort_input = gets.chop
     end
     puts "Please enter the country"
-    country = gets.chomp
+    country = gets.chop
     puts "Please enter hobbies"
-    hobbies = gets.chomp
+    hobbies = gets.chop
     puts "Please enter major"
-    major = gets.chomp
+    major = gets.chop
     students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
     puts "Now we have #{students.count} students"
     # get another name from the user
     puts "Enter the name of a new student"
-    name = gets.chomp
+    name = gets.chop
   end
   # return the array of students
   students
@@ -89,12 +89,7 @@ def print_first_letter(students, letter)
   end
 end
 
-def print_length(students, length=12)
-  students.each_with_index do |student, index|
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length <=
-    length
-  end
-end
+
 
 
 def print_footer(students)
@@ -111,5 +106,5 @@ end
 #nothing happens until we call the method
 students = input_students
 print_header
-print_cohort(students, "May")
+print(students)
 print_footer(students)
