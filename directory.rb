@@ -35,20 +35,6 @@ def input_students
   students
 end
 
-def print_header
-puts "The students of Villains Academy"
-puts "---------------------"
-end
-
-=begin
-def print(students)
-  students.each_with_index do |student, index|
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-  end
-end
-=end
-
-
 def max_length(array, symbol)
   max = 0
   array.each do |element|
@@ -58,6 +44,19 @@ def max_length(array, symbol)
 end
 
 def print(students)
+  max_length_name = max_length(students, :name)
+  max_length_cohort = max_length(students, :cohort)
+  max_length_country = max_length(students, :country)
+  max_length_hobbies = max_length(students, :hobbies)
+  max_length_major = max_length(students, :major)
+  if students.count > 0
+    students.each_with_index do |student, index|
+      puts "#{index + 1}. #{student[:name].center(max_length_name)}, (#{student[:cohort].to_s.center(max_length_cohort)} cohort), #{student[:country].center(max_length_country)}, #{student[:hobbies].center(max_length_hobbies)}, #{student[:major].center(max_length_hobbies)}"
+    end
+  end
+end
+
+def print_with_while(students)
   i = 0
   max_length_name = max_length(students, :name)
   max_length_cohort = max_length(students, :cohort)
@@ -89,22 +88,26 @@ def print_first_letter(students, letter)
   end
 end
 
-
-
+def print_header(students)
+ count = students.count
+ if count == 1
+  puts "The students of Villains Academy"
+  puts "---------------------"
+ end
+end
 
 def print_footer(students)
   count = students.count
-  if count ==1
+  if count == 1
     puts "Overall, we have 1 great student"
-  else
+  elsif count > 1
     puts "Overall, we have #{count} students"
   end
 end
 
 
-
 #nothing happens until we call the method
 students = input_students
-print_header
+print_header(students)
 print(students)
 print_footer(students)
