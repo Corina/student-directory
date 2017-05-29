@@ -38,9 +38,19 @@ puts "The students of Villains Academy"
 puts "---------------------"
 end
 
+=begin
 def print(students)
   students.each_with_index do |student, index|
     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end
+=end
+
+def print(students)
+  i = 0
+  while i < students.length
+    puts "#{i + 1}. #{students[i][:name]} (#{students[i][:cohort]} cohort)"
+    i += 1
   end
 end
 
@@ -66,5 +76,5 @@ end
 
 students = input_students
 print_header
-print_length(students)
+print(students)
 print_footer(students)
