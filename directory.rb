@@ -98,7 +98,12 @@ end
 
 
 def print_footer(students)
-puts "Overall, we have #{students.count} great students"
+  count = students.count
+  if count ==1
+    puts "Overall, we have 1 great student"
+  else
+    puts "Overall, we have #{count} students"
+  end
 end
 
 
