@@ -70,6 +70,19 @@ def print(students)
   end
 end
 
+def print_cohort(students, cohort)
+  max_length_name = max_length(students, :name)
+  max_length_cohort = max_length(students, :cohort)
+  max_length_country = max_length(students, :country)
+  max_length_hobbies = max_length(students, :hobbies)
+  max_length_major = max_length(students, :major)
+  students.each_with_index do |student, index|
+    if student[:cohort].to_s == cohort
+      puts "#{index + 1}. #{student[:name].center(max_length_name)}, (#{student[:cohort].to_s.center(max_length_cohort)} cohort), #{student[:country].center(max_length_country)}, #{student[:hobbies].center(max_length_hobbies)}, #{student[:major].center(max_length_hobbies)}"
+    end
+  end
+end
+
 def print_first_letter(students, letter)
   students.each_with_index do |student, index|
     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name][0] == letter
@@ -93,5 +106,5 @@ end
 #nothing happens until we call the method
 students = input_students
 print_header
-print(students)
+print_cohort(students, "May")
 print_footer(students)
