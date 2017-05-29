@@ -26,7 +26,7 @@ def input_students
     # add the student hash to the array
     puts "Please enter the country"
     country = gets.chomp
-    puts "Please enter hoobies"
+    puts "Please enter hobbies"
     hobbies = gets.chomp
     puts "Please enter major"
     major = gets.chomp
@@ -53,10 +53,24 @@ def print(students)
 end
 =end
 
+
+def max_length(array, symbol)
+  max = 0
+  array.each do |element|
+    max = element[symbol].to_s.length if max < element[symbol].to_s.length
+  end
+  max
+end
+
 def print(students)
   i = 0
+  max_length_name = max_length(students, :name)
+  max_length_cohort = max_length(students, :cohort)
+  max_length_country = max_length(students, :country)
+  max_length_hobbies = max_length(students, :hobbies)
+  max_length_major = max_length(students, :major)
   while i < students.length
-    puts "#{i + 1}. #{students[i][:name]}, (#{students[i][:cohort]} cohort), #{students[i][:country]}, #{students[i][:hobbies]}, #{students[i][:major]}"
+    puts "#{i + 1}. #{students[i][:name].center(max_length_name)}, (#{students[i][:cohort].to_s.center(max_length_cohort)} cohort), #{students[i][:country].center(max_length_country)}, #{students[i][:hobbies].center(max_length_hobbies)}, #{students[i][:major].center(max_length_hobbies)}"
     i += 1
   end
 end
@@ -78,6 +92,8 @@ end
 def print_footer(students)
 puts "Overall, we have #{students.count} great students"
 end
+
+
 
 #nothing happens until we call the method
 
