@@ -1,19 +1,8 @@
 #let's put all student into an array
-=begin
-students = [
-{name: "Dr. Hannibal Lecter", cohort: :november},
-{name: "Darth Vader", cohort: :november},
-{name: "Nurse Ratched", cohort: :november},
-{name: "Michael Corleone", cohort: :november},
-{name: "Alex DeLarge", cohort: :november},
-{name: "The Wicked Witch of the West", cohort: :november},
-{name: "Terminator", cohort: :november},
-{name: "Freddy Krueger", cohort: :november},
-{name: "The Joker", cohort: :november},
-{name: "Joffrey Baratheon", cohort: :november},
-{name: "Norman Bates", cohort: :november}
-]
-=end
+
+
+MONTHS = %w(january february march april may june july august september october november december January February March April May June July August September October November December).to_a
+
 
 def input_students
   puts "Please enter the name of the students"
@@ -24,13 +13,19 @@ def input_students
   name  = gets.chomp
   while !name.empty? do
     # add the student hash to the array
+    puts "Please enter the cohort"
+    cohort_input = gets.chomp
+    while !(cohort_input.is_a? String) || cohort_input == "" || !MONTHS.include?(cohort_input)
+      puts "Please enter a correct name of the month for cohort"
+      cohort_input = gets.chomp
+    end
     puts "Please enter the country"
     country = gets.chomp
     puts "Please enter hobbies"
     hobbies = gets.chomp
     puts "Please enter major"
     major = gets.chomp
-    students << {name: name, cohort: :november, country: country, hobbies: hobbies, major: major}
+    students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
     puts "Now we have #{students.count} students"
     # get another name from the user
     puts "Enter the name of a new student"
@@ -96,7 +91,6 @@ end
 
 
 #nothing happens until we call the method
-
 students = input_students
 print_header
 print(students)
