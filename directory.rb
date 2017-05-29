@@ -50,6 +50,13 @@ def print_first_letter(students, letter)
   end
 end
 
+def print_length(students, length=12)
+  students.each_with_index do |student, index|
+    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length <=
+    length
+  end
+end
+
 
 def print_footer(students)
 puts "Overall, we have #{students.count} great students"
@@ -59,5 +66,5 @@ end
 
 students = input_students
 print_header
-print_first_letter(students, "a")
+print_length(students)
 print_footer(students)
