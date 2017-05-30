@@ -9,26 +9,26 @@ def input_students
   puts "To finish, just hit return twice"
   # create an empty array
   # get the first name
-  name  = gets.chop
+  name  = STDIN.gets.chop
   while !name.empty? do
     # add the student hash to the array
     puts "Please enter the cohort"
-    cohort_input = gets.chop
+    cohort_input = STDIN.gets.chop
     while !(cohort_input.is_a? String) || cohort_input == "" || !MONTHS.include?(cohort_input)
       puts "Please enter a correct name of the month for cohort"
-      cohort_input = gets.chop
+      cohort_input = STDIN.gets.chop
     end
     puts "Please enter the country"
-    country = gets.chop
+    country = STDIN.gets.chop
     puts "Please enter hobbies"
-    hobbies = gets.chop
+    hobbies = STDIN.gets.chop
     puts "Please enter major"
-    major = gets.chop
+    major = STDIN.gets.chop
     @students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
     puts "Now we have #{@students.count} students"
     # get another name from the user
     puts "Enter the name of a new student"
-    name = gets.chop
+    name = STDIN.gets.chop
   end
 end
 
@@ -119,13 +119,25 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, country, hobbies, major = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym, country: country, hobbies: hobbies, major: major}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
 
 def print_menu
@@ -135,6 +147,7 @@ def print_menu
   puts "4. Load students from students.csv"
   puts "9. Exit"
 end
+
 
 def process(selection)
   case selection
@@ -158,10 +171,10 @@ def interactive_menu
     # 1. print the menu and ask the user what to do
     print_menu
     #2. do what user has asked
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
 
-
+try_load_students
 interactive_menu
