@@ -1,5 +1,5 @@
 #let's put all student into an array
-
+@students = []
 
 MONTHS = %w(january february march april may june july august september october november december January February March April May June July August September October November December).to_a
 
@@ -8,7 +8,6 @@ def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
   # create an empty array
-  students  = []
   # get the first name
   name  = gets.chop
   while !name.empty? do
@@ -25,14 +24,12 @@ def input_students
     hobbies = gets.chop
     puts "Please enter major"
     major = gets.chop
-    students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
+    puts "Now we have #{@students.count} students"
     # get another name from the user
     puts "Enter the name of a new student"
     name = gets.chop
   end
-  # return the array of students
-  students
 end
 
 def max_length(array, symbol)
@@ -43,61 +40,61 @@ def max_length(array, symbol)
   max
 end
 
-def print(students)
-  max_length_name = max_length(students, :name)
-  max_length_cohort = max_length(students, :cohort)
-  max_length_country = max_length(students, :country)
-  max_length_hobbies = max_length(students, :hobbies)
-  max_length_major = max_length(students, :major)
-  if students.count > 0
-    students.each_with_index do |student, index|
+def print_student_list
+  max_length_name = max_length(@students, :name)
+  max_length_cohort = max_length(@students, :cohort)
+  max_length_country = max_length(@students, :country)
+  max_length_hobbies = max_length(@students, :hobbies)
+  max_length_major = max_length(@students, :major)
+  if @students.count > 0
+    @students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name].center(max_length_name)}, (#{student[:cohort].to_s.center(max_length_cohort)} cohort), #{student[:country].center(max_length_country)}, #{student[:hobbies].center(max_length_hobbies)}, #{student[:major].center(max_length_hobbies)}"
     end
   end
 end
 
-def print_with_while(students)
+def print_with_while
   i = 0
-  max_length_name = max_length(students, :name)
-  max_length_cohort = max_length(students, :cohort)
-  max_length_country = max_length(students, :country)
-  max_length_hobbies = max_length(students, :hobbies)
-  max_length_major = max_length(students, :major)
-  while i < students.length
-    puts "#{i + 1}. #{students[i][:name].center(max_length_name)}, (#{students[i][:cohort].to_s.center(max_length_cohort)} cohort), #{students[i][:country].center(max_length_country)}, #{students[i][:hobbies].center(max_length_hobbies)}, #{students[i][:major].center(max_length_hobbies)}"
+  max_length_name = max_length(@students, :name)
+  max_length_cohort = max_length(@students, :cohort)
+  max_length_country = max_length(@students, :country)
+  max_length_hobbies = max_length(@students, :hobbies)
+  max_length_major = max_length(@students, :major)
+  while i < @students.length
+    puts "#{i + 1}. #{@students[i][:name].center(max_length_name)}, (#{@students[i][:cohort].to_s.center(max_length_cohort)} cohort), #{@students[i][:country].center(max_length_country)}, #{@students[i][:hobbies].center(max_length_hobbies)}, #{@students[i][:major].center(max_length_hobbies)}"
     i += 1
   end
 end
 
-def print_cohort(students, cohort)
-  max_length_name = max_length(students, :name)
-  max_length_cohort = max_length(students, :cohort)
-  max_length_country = max_length(students, :country)
-  max_length_hobbies = max_length(students, :hobbies)
-  max_length_major = max_length(students, :major)
-  students.each_with_index do |student, index|
+def print_cohort(cohort)
+  max_length_name = max_length(@students, :name)
+  max_length_cohort = max_length(@students, :cohort)
+  max_length_country = max_length(@students, :country)
+  max_length_hobbies = max_length(@students, :hobbies)
+  max_length_major = max_length(@students, :major)
+  @students.each_with_index do |student, index|
     if student[:cohort].to_s == cohort
       puts "#{index + 1}. #{student[:name].center(max_length_name)}, (#{student[:cohort].to_s.center(max_length_cohort)} cohort), #{student[:country].center(max_length_country)}, #{student[:hobbies].center(max_length_hobbies)}, #{student[:major].center(max_length_hobbies)}"
     end
   end
 end
 
-def print_first_letter(students, letter)
-  students.each_with_index do |student, index|
+def print_first_letter(letter)
+  @students.each_with_index do |student, index|
     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name][0] == letter
   end
 end
 
-def print_header(students)
- count = students.count
+def print_header
+ count = @students.count
  if count == 1
   puts "The students of Villains Academy"
   puts "---------------------"
  end
 end
 
-def print_footer(students)
-  count = students.count
+def print_footer
+  count = @students.count
   if count == 1
     puts "Overall, we have 1 great student"
   elsif count > 1
@@ -105,28 +102,37 @@ def print_footer(students)
   end
 end
 
+def print_menu
+  puts "1. Input the students"
+  puts "2. List the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_student_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    students = input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you mean, try again"
+  end
+end
+
 def interactive_menu
-  students = []
   loop do
     # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. List the students"
-    puts "9. Exit"
-    #2. read and save the Input
-    selection = gets.chomp
-    #3. do what user has asked
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      print_header(students)
-      print(students)
-      print_footer(students)
-    when "9"
-      exit
-    else
-      puts "I don't know what you mean, try again"
-    end
+    print_menu
+    #2. do what user has asked
+    process(gets.chomp)
   end
 end
 
