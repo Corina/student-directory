@@ -4,6 +4,10 @@
 MONTHS = %w(january february march april may june july august september october november december January February March April May June July August September October November December).to_a
 
 
+def add_student(name, cohort, country, hobbies, major)
+    @students << {name: name, cohort: cohort.to_sym, country: country, hobbies: hobbies, major: major}
+end
+
 def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
@@ -24,7 +28,7 @@ def input_students
     hobbies = STDIN.gets.chop
     puts "Please enter major"
     major = STDIN.gets.chop
-    @students << {name: name, cohort: cohort_input.to_sym, country: country, hobbies: hobbies, major: major}
+    add_student(name, cohort_input.to_sym, country, hobbies, major)
     puts "Now we have #{@students.count} students"
     # get another name from the user
     puts "Enter the name of a new student"
@@ -123,7 +127,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, country, hobbies, major = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym, country: country, hobbies: hobbies, major: major}
+    add_student(name, cohort.to_sym, country, hobbies, major)
   end
   file.close
 end
