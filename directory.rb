@@ -1,5 +1,7 @@
 #let's put all student into an array
+require "csv"
 @students = []
+
 
 MONTHS = %w(january february march april may june july august september october november december January February March April May June July August September October November December).to_a
 
@@ -24,16 +26,31 @@ end
 def get_country
   puts "Please enter the country"
   country = STDIN.gets.chop
+  while !(country.is_a? String) || country == ""
+    puts "Please enter a correct country"
+    country = STDIN.gets.chop
+  end
+  country
 end
 
 def get_hobbies
   puts "Please enter hobbies"
   hobbies = STDIN.gets.chop
+  while !(hobbies.is_a? String) || hobbies == ""
+    puts "Please enter a correct hobby"
+    hobbies = STDIN.gets.chop
+  end
+  hobbies
 end
 
 def get_major
-  puts "Please enter major"
+  puts "Please enter a major"
   major = STDIN.gets.chop
+  while !(major.is_a? String) || major == ""
+    puts "Please enter a correct major"
+    major = STDIN.gets.chop
+  end
+  major
 end
 
 
@@ -65,6 +82,8 @@ def max_length(array, symbol)
   end
   max
 end
+
+
 
 def print_student_list
   max_length_name = max_length(@students, :name)
@@ -98,7 +117,7 @@ def print_cohort(cohort)
   max_length_country = max_length(@students, :country)
   max_length_hobbies = max_length(@students, :hobbies)
   max_length_major = max_length(@students, :major)
-  @students.each_with_index do |student, index|
+  students.each_with_index do |student, index|
     if student[:cohort].to_s == cohort
       puts "#{index + 1}. #{student[:name].center(max_length_name)}, (#{student[:cohort].to_s.center(max_length_cohort)} cohort), #{student[:country].center(max_length_country)}, #{student[:hobbies].center(max_length_hobbies)}, #{student[:major].center(max_length_hobbies)}"
     end
@@ -138,6 +157,17 @@ end
 
 def save_students
   puts "Please enter the name of the file where you want to save the records"
+  path = File.absolute_path("") + "/" + STDIN.gets.chomp
+  CSV.open(path, "w") do |csv|
+    @students.each do |student|
+      csv << [student[:name], student[:cohort], student[:country], student[:hobbies], student[:major]]
+    end
+  end
+end
+
+=begin
+def save_students
+  puts "Please enter the name of the file where you want to save the records"
   File.open(STDIN.gets.chomp, "w") do |file|
     @students.each do |student|
       student_data = [student[:name], student[:cohort], student[:country], student[:hobbies], student[:major]]
@@ -146,17 +176,17 @@ def save_students
     end
   end
 end
+=end
 
 
 def load_students
   puts "Please enter the name of the file from where you want to load records"
   filename = STDIN.gets.chomp
+  path = File.absolute_path("") + "/" + filename
   if File.exists?(filename)
-    File.open(filename, "r") do |file|
-      file.readlines.each do |line|
-        name, cohort, country, hobbies, major = line.chomp.split(",")
-        add_student(name, cohort.to_sym, country, hobbies, major)
-      end
+    CSV.foreach(path) do |row|
+      name, cohort, country, hobbies, major = row
+      add_student(name, cohort.to_sym, country, hobbies, major)
     end
   else
     puts "Sorry, #{filename} doesn't exist."
@@ -194,13 +224,14 @@ def process(selection)
     puts "You have successfully added #{@students.count} students. Please chose another option."
   when "2"
     show_students
-    puts "#{@students.count} students we're successfully listed. Please chose another option."
+    puts "#{@students.count} students were successfully listed. Please chose another option."
   when "3"
     save_students
-    puts "#{@students.count} students we're successfully saved. Please chose another option."
+    puts "#{@students.count} students were successfully saved. Please chose another option."
   when "4"
+    previous_count = @students.count
     load_students
-    puts "#{@students.count} students we're successfully loaded. Please chose another option."
+    puts "#{@students.count - previous_count} students were successfully loaded. Please chose another option."
   when "9"
     exit
   else
