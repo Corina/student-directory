@@ -8,6 +8,36 @@ def add_student(name, cohort, country, hobbies, major)
     @students << {name: name, cohort: cohort.to_sym, country: country, hobbies: hobbies, major: major}
 end
 
+def get_name
+end
+
+def get_cohort
+  puts "Please enter the cohort"
+  cohort_input = STDIN.gets.chop
+  while !(cohort_input.is_a? String) || cohort_input == "" || !MONTHS.include?(cohort_input)
+    puts "Please enter a correct name of the month for cohort"
+    cohort_input = STDIN.gets.chop
+  end
+  cohort_input
+end
+
+def get_country
+  puts "Please enter the country"
+  country = STDIN.gets.chop
+end
+
+def get_hobbies
+  puts "Please enter hobbies"
+  hobbies = STDIN.gets.chop
+end
+
+def get_major
+  puts "Please enter major"
+  major = STDIN.gets.chop
+end
+
+
+
 def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
@@ -16,18 +46,10 @@ def input_students
   name  = STDIN.gets.chop
   while !name.empty? do
     # add the student hash to the array
-    puts "Please enter the cohort"
-    cohort_input = STDIN.gets.chop
-    while !(cohort_input.is_a? String) || cohort_input == "" || !MONTHS.include?(cohort_input)
-      puts "Please enter a correct name of the month for cohort"
-      cohort_input = STDIN.gets.chop
-    end
-    puts "Please enter the country"
-    country = STDIN.gets.chop
-    puts "Please enter hobbies"
-    hobbies = STDIN.gets.chop
-    puts "Please enter major"
-    major = STDIN.gets.chop
+    cohort_input = get_cohort
+    country = get_country
+    hobbies = get_hobbies
+    major = get_major
     add_student(name, cohort_input.to_sym, country, hobbies, major)
     puts "Now we have #{@students.count} students"
     # get another name from the user
@@ -157,12 +179,16 @@ def process(selection)
   case selection
   when "1"
     students = input_students
+    puts "You have successfully added students. Please chose another option."
   when "2"
     show_students
+    puts "Students we're successfully listed. Please chose another option."
   when "3"
     save_students
+    puts "Students we're successfully saved. Please chose another option."
   when "4"
     load_students
+    puts "Students we're successfully loaded. Please chose another option."
   when "9"
     exit
   else
