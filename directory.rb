@@ -138,13 +138,13 @@ end
 
 def save_students
   puts "Please enter the name of the file where you want to save the records"
-  file = File.open(STDIN.gets.chomp, "w")
+  File.open(STDIN.gets.chomp, "w") do |file|
     @students.each do |student|
       student_data = [student[:name], student[:cohort], student[:country], student[:hobbies], student[:major]]
       csv_line = student_data.join(",")
       file.puts csv_line
     end
-    file.close
+  end
 end
 
 
@@ -152,12 +152,12 @@ def load_students
   puts "Please enter the name of the file from where you want to load records"
   filename = STDIN.gets.chomp
   if File.exists?(filename)
-    file = File.open(filename, "r")
-    file.readlines.each do |line|
-    name, cohort, country, hobbies, major = line.chomp.split(",")
-    add_student(name, cohort.to_sym, country, hobbies, major)
+    File.open(filename, "r") do |file|
+      file.readlines.each do |line|
+        name, cohort, country, hobbies, major = line.chomp.split(",")
+        add_student(name, cohort.to_sym, country, hobbies, major)
+      end
     end
-  file.close
   else
     puts "Sorry, #{filename} doesn't exist."
     exit
