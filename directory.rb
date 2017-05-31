@@ -135,24 +135,35 @@ def show_students
   print_footer
 end
 
+
 def save_students
-  file = File.open("students.csv", "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:country], student[:hobbies], student[:major]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
+  puts "Please enter the name of the file where you want to save the records"
+  file = File.open(STDIN.gets.chomp, "w")
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort], student[:country], student[:hobbies], student[:major]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
+    file.close
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+
+def load_students
+  puts "Please enter the name of the file from where you want to load records"
+  filename = STDIN.gets.chomp
+  if File.exists?(filename)
+    file = File.open(filename, "r")
+    file.readlines.each do |line|
     name, cohort, country, hobbies, major = line.chomp.split(",")
     add_student(name, cohort.to_sym, country, hobbies, major)
-  end
+    end
   file.close
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
+
 
 def try_load_students
   filename = ARGV.first
@@ -166,11 +177,12 @@ def try_load_students
   end
 end
 
+
 def print_menu
   puts "1. Input the students"
   puts "2. List the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load students from students.csv"
+  puts "3. Save the list"
+  puts "4. Load students"
   puts "9. Exit"
 end
 
@@ -179,16 +191,16 @@ def process(selection)
   case selection
   when "1"
     students = input_students
-    puts "You have successfully added students. Please chose another option."
+    puts "You have successfully added #{@students.count} students. Please chose another option."
   when "2"
     show_students
-    puts "Students we're successfully listed. Please chose another option."
+    puts "#{@students.count} students we're successfully listed. Please chose another option."
   when "3"
     save_students
-    puts "Students we're successfully saved. Please chose another option."
+    puts "#{@students.count} students we're successfully saved. Please chose another option."
   when "4"
     load_students
-    puts "Students we're successfully loaded. Please chose another option."
+    puts "#{@students.count} students we're successfully loaded. Please chose another option."
   when "9"
     exit
   else
@@ -206,5 +218,5 @@ def interactive_menu
 end
 
 
-try_load_students
+
 interactive_menu
